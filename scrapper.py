@@ -16,9 +16,9 @@ reddit = praw.Reddit(client_id=credentials.APP_CLIENT_ID,
                      username=credentials.DEVELOPER)
 
 sub = reddit.subreddit(SUB_REDDIT)
-# links = [post.url for post in sub.hot(limit=NUM_OF_POSTS)]
-for post in sub.hot(limit=NUM_OF_POSTS):
-    downloader.downloader(post.url)
+links = [post.url for post in sub.hot(limit=NUM_OF_POSTS)]
+for link in links:
+    downloader.downloader(link)
 # queue = Queue()
 # for x in range(NUM_OF_THREADS):
 #     worker = DownloadThread(queue)
