@@ -9,6 +9,11 @@ import requests.exceptions as network_exception
 from bs4 import BeautifulSoup
 from time import sleep
 
+TOO_MANY_REQUESTS = 429
+FORBIDDEN_STATUS = 403
+MAX_TRIES = 3
+# max number of times to try to scrap from a link
+
 
 def downloader(link):
     """
@@ -19,17 +24,20 @@ def downloader(link):
     """
     print link
     r = requests.get(link)
-    if r.status_code == 403:
+    if r.status_code == FORBIDDEN_STATUS:
         # r.status_code is 403 means the website has forbidden us from scraping.
         print "forbidden from scrapping."
         return
     soup = BeautifulSoup(r.text)
-
+    count = 0
     try:
-        while r.status_code == 429:
+        while r.status_code == TOO_MANY_REQUESTS:
             # This while loop is used because of Reddit's policy to not let
             # multiple requests in a quick session. The status code is 429 then.
             # In this case, just sleep for sometime and send a request again.
+            if count == MAX_TRIES:
+                raise network_exception
+            count += 1
             print "here, sleeping"
             sleep(30)
             r = requests.get(link)
