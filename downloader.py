@@ -10,7 +10,10 @@ from bs4 import BeautifulSoup
 from time import sleep
 
 TOO_MANY_REQUESTS = 429
+# when we send too many requests in a very short time reddit terminates the
+# request by sending this status code
 FORBIDDEN_STATUS = 403
+# some websites prevent scrapping by sending a forbidden status of 403
 MAX_TRIES = 3
 # max number of times to try to scrap from a link
 
@@ -32,8 +35,6 @@ def downloader(link):
     count = 0
     try:
         while r.status_code == TOO_MANY_REQUESTS:
-            # This while loop is used because of Reddit's policy to not let
-            # multiple requests in a quick session. The status code is 429 then.
             # In this case, just sleep for sometime and send a request again.
             if count == MAX_TRIES:
                 raise network_exception
@@ -43,8 +44,6 @@ def downloader(link):
             r = requests.get(link)
             soup = BeautifulSoup(r.text)
     except network_exception:
-        # in case an error occurred while scrapping, instead of terminating the
-        # entire script, just don't scrap the link. These errors include
         # Timeout, SSL error, Proxy Error, invalid link and so on.
         print network_exception
         return
