@@ -1,9 +1,6 @@
 import credentials
 import praw
 import downloader
-# from threader import DownloadThread
-# from Queue import Queue
-
 
 SUB_REDDIT = 'politics'
 NUM_OF_POSTS = 2
@@ -19,10 +16,3 @@ sub = reddit.subreddit(SUB_REDDIT)
 links = [post.url for post in sub.hot(limit=NUM_OF_POSTS)]
 for link in links:
     downloader.downloader(link)
-# queue = Queue()
-# for x in range(NUM_OF_THREADS):
-#     worker = DownloadThread(queue)
-#     worker.start()
-# for link in links:
-#     queue.put(link)
-# queue.join()
