@@ -83,6 +83,8 @@ target/
 __pycache__/
 local_settings.py
 
+*.txt
+*.db
 .env
 db.sqlite3
 /credentials.py
