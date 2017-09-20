@@ -13,9 +13,7 @@ from contextlib import closing
 
 DATABASE_NAME = 'dictionary.db'
 file_list = list()
-for fileName in os.listdir('./'):
-    # os.listdir('directory') lists all the files in 'directory'. './' means
-    # current directory.
+for fileName in os.listdir('./corpus/'):
     if fileName.endswith(".txt"):
         file_list.append(os.path.join('./', fileName))
 
@@ -37,7 +35,5 @@ with closing(shelve.open(DATABASE_NAME)) as dictionary:
                     new_set.add(fileName)
                     dictionary[word] = new_set
                 else:
-                    # create a new set if the word is not present. We are
-                    # using sets because 'and', 'or' , 'in' etc are O(1) in sets.
                     dictionary[word] = {fileName}
 
