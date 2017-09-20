@@ -15,7 +15,7 @@ DATABASE_NAME = 'dictionary.db'
 file_list = list()
 for fileName in os.listdir('./corpus/'):
     if fileName.endswith(".txt"):
-        file_list.append(os.path.join('./', fileName))
+        file_list.append(os.path.join('./corpus/', fileName))
 
 with closing(shelve.open(DATABASE_NAME)) as dictionary:
     # we need to use closing() because shelve.open() doesn't define an
@@ -23,6 +23,7 @@ with closing(shelve.open(DATABASE_NAME)) as dictionary:
     # that method for us
     for fileName in file_list:
         with open(fileName) as f:
+            print f
             words = set(f.read().split())
             # apply any new tokenization logic here
             for word in words:
