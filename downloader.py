@@ -6,6 +6,7 @@ parse the response.
 """
 import requests
 import requests.exceptions as network_exception
+import bs4
 from bs4 import BeautifulSoup
 from time import sleep
 
@@ -27,34 +28,21 @@ def downloader(link):
     """
     print link
     r = requests.get(link)
-    if r.status_code == FORBIDDEN_STATUS:
-        # r.status_code is 403 means the website has forbidden us from scraping.
-        print "forbidden from scrapping."
-        return
     soup = BeautifulSoup(r.text)
-    count = 0
-    try:
-        while r.status_code == TOO_MANY_REQUESTS:
-            # In this case, just sleep for sometime and send a request again.
-            if count == MAX_TRIES:
-                raise network_exception
-            count += 1
-            print "here, sleeping"
-            sleep(30)
-            r = requests.get(link)
-            soup = BeautifulSoup(r.text)
-    except network_exception:
-        # Timeout, SSL error, Proxy Error, invalid link and so on.
-        print network_exception
-        return
-
-    file_name = "file_{}.txt".format(soup.title.string.encode('utf-8')[:5])
+    file_name = "{}.txt".format(soup.title.string.encode('utf-8'))
     # come-up with a better file_name by all means and change this comment when
     # done. DO NOT CHANGE THE FILE EXTENSION.
     with open(file_name, 'w') as f:
         for line in soup.find_all('p'):
+            text = []
+            for x in line:
+                if isinstance(x, bs4.element.NavigableString):
+                    print x
+                    text.append(x.strip().encode("utf-8"))
             # we are finding all 'p' tags because information is usually
             # present inside paragraph tags. DON"T SCRAP THE BODY.
             if line.string:
-                f.write(line.string.encode('utf-8'))
+                f.write(" ".join(text))
                 f.write("\n")
+
+downloader("http://science.howstuffworks.com/space/aliens-ufos/fermi-paradox-where-heck-are-all-aliens.htm")
