@@ -10,7 +10,7 @@ import os
 import shelve
 from contextlib import closing
 
-
+DOCUMENT_NUMBER = 694
 DATABASE_NAME = 'dictionary.db'
 file_list = list()
 for fileName in os.listdir('./corpus/'):
