@@ -24,7 +24,7 @@ with closing(shelve.open(DATABASE_NAME)) as dictionary:
     for fileName in file_list:
         with open(fileName) as f:
             print f
-            words = set(f.read().split())
+            words = f.read().split()
             # apply any new tokenization logic here
             for word in words:
                 word = word.lower().strip()
@@ -32,9 +32,12 @@ with closing(shelve.open(DATABASE_NAME)) as dictionary:
                     # Shelve['key'] contents, if the value is a iterable
                     # python object can't be changed directly. Hence we
                     # retrieve it, mutate it and then give it back instead.
-                    new_set = dictionary[word]
-                    new_set.add(fileName)
-                    dictionary[word] = new_set
+                    old_list = dictionary[word]
+                    if fileName in old_list:
+                        old_list[fileName] += 1
+                    else:
+                        old_list.update({fileName: 1})
+                    dictionary[word] = old_list
                 else:
-                    dictionary[word] = {fileName}
+                    dictionary[word] = {fileName: 1}
 

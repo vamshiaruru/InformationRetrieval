@@ -14,7 +14,10 @@ if __name__ == "__main__":
     with closing(shelve.open("dictionary.db")) as dictionary:
         query_posting_list = [dictionary.get(query_word, {}) for
                               query_word in query_words]
-        result_documents = set.intersection(*query_posting_list)
+        myDict = query_posting_list[0]
+        for key, value in sorted(myDict.iteritems(), key=lambda (k, v): (v, k)):
+            print "%s: %s" % (key, value)
+        # result_documents = set.intersection(*query_posting_list)
 
     # add ranker logic i.e calculate scores based of TF,IDF or Cosine.
-    print result_documents
+    # print result_documents
