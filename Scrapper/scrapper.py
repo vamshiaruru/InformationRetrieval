@@ -2,8 +2,9 @@
 Get top "NUM_OF_POSTS" links from "SUB_REDDIT" and pass them to downloader to
 scrap them.
 """
-import credentials
 import praw
+
+import credentials
 import downloader
 
 SUB_REDDIT = 'worldnews'
