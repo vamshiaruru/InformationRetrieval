@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 
-class IndexBuilder(object):
+class InvertedIndexBuilder(object):
     DICTIONARY = 'dictionary.db'
     LENGTH = 'length.db'
     file_list = list()
@@ -87,13 +87,15 @@ class IndexBuilder(object):
                         vector_length = math.pow(vector_length, 0.5)
                         length.update({document: vector_length})
 
+
+class BigramIndexBuilder(object):
+    pass
+
 if __name__ == '__main__':
-    ib = IndexBuilder()
-    # now_time = datetime.now()
-    # ib.weighted_index()
-    # print datetime.now() - now_time
-    ib.get_files()
-    print "starting:"
+    ib = InvertedIndexBuilder()
+    now_time = datetime.now()
+    ib.weighted_index()
+    print datetime.now() - now_time
     now_time = datetime.now()
     ib.length_of_document()
     print datetime.now() - now_time
