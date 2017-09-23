@@ -9,6 +9,8 @@ in disk.
 import os
 import shelve
 from contextlib import closing
+from datetime import datetime
+
 
 DOCUMENT_NUMBER = 694
 DATABASE_NAME = 'dictionary.db'
@@ -17,6 +19,7 @@ for fileName in os.listdir('./corpus/'):
     if fileName.endswith(".txt"):
         file_list.append(os.path.join('./corpus/', fileName))
 
+starTime = datetime.now()
 with closing(shelve.open(DATABASE_NAME)) as dictionary:
     # we need to use closing() because shelve.open() doesn't define an
     # __exit__ method without with "with" can't be used. closing() defines
@@ -41,3 +44,4 @@ with closing(shelve.open(DATABASE_NAME)) as dictionary:
                 else:
                     dictionary[word] = {fileName: 1}
 
+print datetime.now() - starTime
