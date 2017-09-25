@@ -17,9 +17,15 @@
     {% if zero_scores %}
         <div class="warning">
             <i>The following words do not exist in our corpus:</i>
-            {% for word in zero_scores %}
+            {% for word in zero_scores.keys() %}
                 <ul>
-                <li>{{ word }}</li>
+                    <li>{{ word }}. Perhaps you meant:
+                    {% for correction in zero_scores[word] %}
+                        <ul>
+                        <li>{{ correction }}</li>
+                        </ul>
+                    {% endfor %}
+                    </li>
                 </ul>
             {% endfor %}
         </div>

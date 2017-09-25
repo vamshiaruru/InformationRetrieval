@@ -9,6 +9,7 @@ import math
 from collections import Counter
 import heapq
 import operator
+from EditDistace import EditDistance
 
 
 class Searcher(object):
@@ -17,9 +18,11 @@ class Searcher(object):
     DOCUMENT_NUMBER = 693
     weighted = False
     stop_word = []
+    top_corrections = dict()
 
     def __init__(self, input_query, **kwargs):
         self.query = input_query
+        self.top_corrections = {}
         if kwargs.get("query_score"):
             self.query_score = kwargs.get("query_score")
             self.weighted = True
@@ -58,12 +61,14 @@ class Searcher(object):
         length = shelve.open("length.db")
         qc = shelve.open("query_corpus.db")
         for word in query_words:
-            if self.query_score[word] :
+            if self.query_score[word]:
                 if word in qc:
                     prev = qc[word]
                     qc[word] = prev + 1
                 else:
                     qc[word] = 1
+            elif not self.query_score[word] and word not in self.stop_word:
+                self.top_corrections[word] = EditDistance().top_corrections(word)
         scores = {}
         for query_term in self.query_score.iterkeys():
             posting_list = db.get(query_term, {})
