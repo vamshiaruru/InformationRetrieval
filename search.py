@@ -15,14 +15,20 @@ class Searcher(object):
     query = None
     query_score = dict()
     DOCUMENT_NUMBER = 693
+    weighted = False
 
-    def __init__(self, input_query):
+    def __init__(self, input_query, **kwargs):
         self.query = input_query
-        self.query_score = {}
+        if kwargs.get("query_score"):
+            self.query_score = kwargs.get("query_score")
+            self.weighted = True
+        else:
+            self.query_score = {}
 
     def query_score_calculator(self, words):
+        if self.weighted:
+            return
         self.query_score.update(Counter(words))
-        print self.query_score
         for key in self.query_score.iterkeys():
             with closing(shelve.open("dictionary.db")) as db:
                 self.query_score[key] = 1 + math.log(self.query_score[key], 10)
@@ -70,6 +76,8 @@ class Searcher(object):
         return sorted_scores[0:20]
 
 if __name__ == "__main__":
-    query = raw_input("Enter the query: ")
-    search = Searcher(query)
-    search.cosine_score()
+    query = "elon musk"
+    query_score = {"elon": 0.15, "musk": 0.25}
+    search = Searcher(query, query_score=query_score)
+    print search.cosine_score()
+    print search.query_score

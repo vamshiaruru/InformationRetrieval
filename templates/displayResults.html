@@ -4,24 +4,41 @@
     <meta charset="UTF-8">
     <title>Search results!</title>
     <script src="../static/js/jquery-3.2.1.min.js"></script>
+    <script src="../static/js/displayResults.js"></script>
 </head>
 <body>
     <b> For the query: {{ input_query }}, the following documents were found</b>
+    <button onclick="hideClass($(this), 'score')">Show Scores</button>
     {% for document,score in results %}
         <ul>
-            <li>{{ document }} :<span class="score">{{ score }}</span></li>
+            <li>{{ document }} <span class="score">: {{ score }}</span></li>
         </ul>
     {% endfor %}
-    <button id="displayReason">Why am I seeing these results?</button>
+    <div class="results">
+    <button id="displayReason" onclick="$(this).next().toggle()">Why am I seeing
+        these
+        results?</button>
     <div class="reason">
-        <b> For the query {{ input_query }}, our algorithm gave the following
+        <b> For the query "<i>{{ input_query }}</i>", our algorithm gave the
+            following
             orders of importance to various words
         </b>
         <ul>
             {% for query_word in scores %}
-                <li>{{ query_word }} : {{ scores[query_word] }}</li>
+                <li>{{ query_word }} : {{ scores[query_word]*100 }}</li>
             {% endfor %}
         </ul>
     </div>
+    </div>
+    <b>You can tell us which words to give more importance for!</b>
+    <form method="post" action="{{ url_for('weighted_search')}}">
+        <input type="hidden" name="query" value="{{ input_query }}"/>
+        {% for query_word in scores %}
+            <label for="{{ query_word }}">{{ query_word }}:</label>
+            <input name="{{ query_word }}" id="{{ query_word }}"
+                   class="inputField"/>
+        {% endfor %}
+        <input type="submit" id="weightedSearch" value="Search"/>
+    </form>
 </body>
 </html>

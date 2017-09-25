@@ -7,7 +7,7 @@
 
 </head>
 <body>
-    <form method="post" action="./displayResults">
+    <form method="post" action="{{ url_for('search') }}">
         <input name="searchBar" id="searchBar" placeholder="enter your query!">
         <input name="submitButton" id="submitButton" value="Search!" type="submit">
     </form>
