@@ -13,6 +13,7 @@ class InvertedIndexBuilder(object):
     LENGTH = 'length.db'
     file_list = list()
     CORPUS = "./corpus/"
+    # todo strip punctuation, may be use nltk for tokenization!
 
     def get_files(self):
         """

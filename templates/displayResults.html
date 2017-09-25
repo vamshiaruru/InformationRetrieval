@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search results!</title>
+    <script src="../static/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <b> For the query: {{ input_query }}, the following documents were found</b>
+    {% for document,score in results %}
+        <ul>
+            <li>{{ document }} :<span class="score">{{ score }}</span></li>
+        </ul>
+    {% endfor %}
+    <button id="displayReason">Why am I seeing these results?</button>
+    <div class="reason">
+        <b> For the query {{ input_query }}, our algorithm gave the following
+            orders of importance to various words
+        </b>
+        <ul>
+            {% for query_word in scores %}
+                <li>{{ query_word }} : {{ scores[query_word] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

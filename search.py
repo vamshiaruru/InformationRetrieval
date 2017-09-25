@@ -18,9 +18,11 @@ class Searcher(object):
 
     def __init__(self, input_query):
         self.query = input_query
+        self.query_score = {}
 
     def query_score_calculator(self, words):
         self.query_score.update(Counter(words))
+        print self.query_score
         for key in self.query_score.iterkeys():
             with closing(shelve.open("dictionary.db")) as db:
                 self.query_score[key] = 1 + math.log(self.query_score[key], 10)
@@ -29,19 +31,15 @@ class Searcher(object):
                     idf = 0
                 else:
                     idf = math.log(self.DOCUMENT_NUMBER/df)
-                print key, idf
                 self.query_score[key] *= idf
-        print self.query_score
         vector_length = 0
         for key in self.query_score.iterkeys():
             vector_length += math.pow(self.query_score[key], 2)
         vector_length = math.pow(vector_length, 0.5)
-        print vector_length
         if vector_length == 0:
             return
         for key in self.query_score.iterkeys():
             self.query_score[key] /= vector_length
-        print self.query_score
 
     def cosine_score(self):
         query_words = [word.lower().strip() for word in self.query.split()]
@@ -58,7 +56,6 @@ class Searcher(object):
         scores = {}
         for query_term in self.query_score.iterkeys():
             posting_list = db.get(query_term, {})
-            print query_term, self.query_score[query_term]
             for file_name in posting_list.iterkeys():
                 document_score = scores.get(file_name, 0)
                 document_score += self.query_score[query_term] *\
@@ -70,8 +67,7 @@ class Searcher(object):
         # todo implement this with heap
         scores = scores.items()
         sorted_scores = heapq.nlargest(20, scores, key=operator.itemgetter(1))
-        for i in sorted_scores[0:20]:
-            print i[0], i[1]
+        return sorted_scores[0:20]
 
 if __name__ == "__main__":
     query = raw_input("Enter the query: ")
