@@ -7,6 +7,8 @@
     <script src="../static/js/displayResults.js"></script>
 </head>
 <body>
+    <a href="{{ url_for("main") }}">Home</a>
+    <br>
     <b> For the query: {{ input_query }}, the following documents were found</b>
     <button onclick="hideClass($(this), 'score')">Show Scores</button>
     {% for document,score in results %}
