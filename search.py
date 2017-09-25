@@ -34,7 +34,7 @@ class Searcher(object):
             return
         self.query_score.update(Counter(words))
         for key in self.query_score.iterkeys():
-            with closing(shelve.open("dictionary.db")) as db:
+            with closing(shelve.open("dictionary2.db")) as db:
                 self.query_score[key] = 1 + math.log(self.query_score[key], 10)
                 df = len(db.get(key, {}))
                 if df == 0:
@@ -57,8 +57,8 @@ class Searcher(object):
     def cosine_score(self):
         query_words = [word.lower().strip() for word in self.query.split()]
         self.query_score_calculator(query_words)
-        db = shelve.open("dictionary.db")
-        length = shelve.open("length.db")
+        db = shelve.open("dictionary2.db")
+        length = shelve.open("length2.db")
         qc = shelve.open("query_corpus.db")
         for word in query_words:
             if self.query_score[word]:

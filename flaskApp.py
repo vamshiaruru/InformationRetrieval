@@ -11,7 +11,7 @@ def main():
 
 @app.route("/displayResults", methods=['POST'])
 def search():
-    query = request.form.get('searchBar', "Elon musk")
+    query = request.form.get('searchBar')
     query = unicodedata.normalize('NFKD', query).encode('ascii', 'ignore')
     searcher = Searcher(query)
     results = searcher.cosine_score()

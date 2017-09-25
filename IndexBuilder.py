@@ -9,10 +9,10 @@ from datetime import datetime
 
 
 class InvertedIndexBuilder(object):
-    DICTIONARY = 'dictionary.db'
-    LENGTH = 'length.db'
+    DICTIONARY = 'dictionary2.db'
+    LENGTH = 'length2.db'
     file_list = list()
-    CORPUS = "./corpus/"
+    CORPUS = "./static/corpus/"
     # todo strip punctuation, may be use nltk for tokenization!
 
     def get_files(self):
@@ -22,7 +22,7 @@ class InvertedIndexBuilder(object):
         """
         for fileName in os.listdir(self.CORPUS):
             if fileName.endswith(".txt"):
-                self.file_list.append(os.path.join('./corpus/', fileName))
+                self.file_list.append(os.path.join('./static/corpus/', fileName))
 
     def weighted_index(self):
         """
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     print now_time
     ib.weighted_index()
     print datetime.now() - now_time
-    print now_time
     now_time = datetime.now()
+    print now_time
     ib.length_of_document()
     print datetime.now() - now_time

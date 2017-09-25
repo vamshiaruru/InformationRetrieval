@@ -13,7 +13,9 @@
     <button onclick="hideClass($(this), 'score')">Show Scores</button>
     {% for document,score in results %}
         <ul>
-            <li>{{ document }} <span class="score">: {{ score }}</span></li>
+            {% set documentName = document[16:-4] %}
+            <li><a href="{{ document }}">{{ documentName }}</a>
+            <span class="score">: {{ score }}</span></li>
         </ul>
     {% endfor %}
     {% if zero_scores %}
