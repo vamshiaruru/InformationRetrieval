@@ -1,5 +1,0 @@
-DEVELOPER = 'cant-find-user-name'
-SECRET = 'I9u2GqCY4RWtNIGS-D9JKNiW3yU'
-APP_NAME = 'crawler'
-APP_CLIENT_ID = 'DZKwktFwBdZ77A'
-PASSWORD = 'gardevoir81!'
