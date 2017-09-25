@@ -95,8 +95,10 @@ class BigramIndexBuilder(object):
 if __name__ == '__main__':
     ib = InvertedIndexBuilder()
     now_time = datetime.now()
+    print now_time
     ib.weighted_index()
     print datetime.now() - now_time
+    print now_time
     now_time = datetime.now()
     ib.length_of_document()
     print datetime.now() - now_time

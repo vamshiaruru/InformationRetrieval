@@ -15,7 +15,7 @@ from EditDistace import EditDistance
 class Searcher(object):
     query = None
     query_score = dict()
-    DOCUMENT_NUMBER = 693
+    DOCUMENT_NUMBER = 690
     weighted = False
     stop_word = []
     top_corrections = dict()
