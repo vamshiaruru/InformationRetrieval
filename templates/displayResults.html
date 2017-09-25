@@ -14,6 +14,16 @@
             <li>{{ document }} <span class="score">: {{ score }}</span></li>
         </ul>
     {% endfor %}
+    {% if zero_scores %}
+        <div class="warning">
+            <i>The following words do not exist in our corpus:</i>
+            {% for word in zero_scores %}
+                <ul>
+                <li>{{ word }}</li>
+                </ul>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="results">
     <button id="displayReason" onclick="$(this).next().toggle()">Why am I seeing
         these

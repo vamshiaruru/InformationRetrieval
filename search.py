@@ -16,6 +16,7 @@ class Searcher(object):
     query_score = dict()
     DOCUMENT_NUMBER = 693
     weighted = False
+    stop_word = []
 
     def __init__(self, input_query, **kwargs):
         self.query = input_query
@@ -33,8 +34,11 @@ class Searcher(object):
             with closing(shelve.open("dictionary.db")) as db:
                 self.query_score[key] = 1 + math.log(self.query_score[key], 10)
                 df = len(db.get(key, {}))
-                if df == 0 or df > 500:
+                if df == 0:
                     idf = 0
+                elif df > 500:
+                    idf = 0
+                    self.stop_word.append(key)
                 else:
                     idf = math.log(self.DOCUMENT_NUMBER/df)
                 self.query_score[key] *= idf
@@ -54,11 +58,12 @@ class Searcher(object):
         length = shelve.open("length.db")
         qc = shelve.open("query_corpus.db")
         for word in query_words:
-            if word in qc:
-                prev = qc[word]
-                qc[word] = prev + 1
-            else:
-                qc[word] = 1
+            if self.query_score[word] :
+                if word in qc:
+                    prev = qc[word]
+                    qc[word] = prev + 1
+                else:
+                    qc[word] = 1
         scores = {}
         for query_term in self.query_score.iterkeys():
             posting_list = db.get(query_term, {})
@@ -73,6 +78,9 @@ class Searcher(object):
         # todo implement this with heap
         scores = scores.items()
         sorted_scores = heapq.nlargest(20, scores, key=operator.itemgetter(1))
+        db.close()
+        length.close()
+        qc.close()
         return sorted_scores[0:20]
 
 if __name__ == "__main__":

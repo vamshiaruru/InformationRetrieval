@@ -16,9 +16,16 @@ def search():
     searcher = Searcher(query)
     results = searcher.cosine_score()
     scores = searcher.query_score
-    print results
+    zero_scores = []
+    for key in scores.keys():
+        if not scores[key]:
+            if key not in searcher.stop_word:
+                zero_scores.append(key)
+                # perhaps add "did you mean?" here
+
     return render_template("displayResults.html", input_query=query,
-                           results=results, scores=scores)
+                           results=results, scores=scores,
+                           zero_scores=zero_scores)
 
 
 @app.route("/displayWeightedResults", methods=['POST'])
@@ -40,8 +47,13 @@ def weighted_search():
     searcher = Searcher(query, query_score=weights)
     results = searcher.cosine_score()
     scores = searcher.query_score
+    zero_scores = []
+    for key in scores.keys():
+        if not scores[key]:
+            zero_scores.append(key)
     return render_template("displayResults.html", input_query=query,
-                           results=results, scores=scores)
+                           results=results, scores=scores,
+                           zero_scores=zero_scores)
 
 if __name__ == '__main__':
     app.debug = True
