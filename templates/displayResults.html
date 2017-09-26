@@ -13,8 +13,10 @@
     <button onclick="hideClass($(this), 'score')">Show Scores</button>
     {% for document,score in results %}
         <ul>
+            {% set documentPath = document[9:] %}
             {% set documentName = document[16:-4] %}
-            <li><a href="{{ document }}">{{ documentName }}</a>
+            <li><a href="{{ url_for('static',filename=documentPath) }}">{{
+                    documentName }}</a>
             <span class="score">: {{ score }}</span></li>
         </ul>
     {% endfor %}
