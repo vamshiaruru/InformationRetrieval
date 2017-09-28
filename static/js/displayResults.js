@@ -4,8 +4,7 @@ $(document).ready(function () {
 });
 function hideClass(button, className) {
     $('.'+className).toggle();
-    console.log(button.html());
-    if(button.html() == "Show Scores"){
+    if(button.html() === "Show Scores"){
         button.html("Hide Scores");
     }else{
         button.html("Show Scores");
@@ -14,9 +13,8 @@ function hideClass(button, className) {
 function readFile(Filename) {
     $.get(Filename, function (data) {
         var win = window.open();
-        console.log(win);
         win.document.open();
-        str =
+        var str =
         '<head>'+
         '<meta charset="UTF-8">'+
         '<title>Opened File!</title>'+
@@ -25,8 +23,9 @@ function readFile(Filename) {
         '</head>'+
         '<body>';
         win.document.write(str);
-        lines = data.split("\n");
-        for(i = 0; i < lines.length; i++){
+        var lines = data.split("\n");
+        win.document.write("<p><b>"+lines[0]+"</b></p>");
+        for(var i = 1; i < lines.length; i++){
             win.document.write("<p>"+lines[i]+"</p>")
         }
         win.document.close();
