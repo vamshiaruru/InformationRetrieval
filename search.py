@@ -10,6 +10,8 @@ from collections import Counter
 import heapq
 import operator
 from EditDistace import EditDistance
+import nltk
+from nltk import word_tokenize
 
 
 class Searcher(object):
@@ -35,6 +37,11 @@ class Searcher(object):
     stop_word = []
     top_corrections = dict()
     boolean_results = set()
+    title_results = set()
+    QUERY_CORPUS = "query_corpus.db"
+    TITLES = "titles.db"
+    DICTIONARY = "dictionary.db"
+    LENGTH = "length.db"
 
     def __init__(self, input_query, **kwargs):
         self.query = input_query
@@ -73,7 +80,7 @@ class Searcher(object):
         self.query_score.update(Counter(words))
         first = True
         for key in self.query_score.iterkeys():
-            with closing(shelve.open("dictionary2.db")) as db:
+            with closing(shelve.open(self.DICTIONARY)) as db:
                 if first:
                     first = False
                     post_set = set(db.get(key, {}).keys())
@@ -112,11 +119,13 @@ class Searcher(object):
         Uses heapq.sort to get the top 20 items.
         :return: Top 20 documents with highest score
         """
-        query_words = [word.lower().strip() for word in self.query.split()]
+        porter = nltk.PorterStemmer()
+        query_words = [porter.stem(t) for t in word_tokenize(self.query.strip())]
+        query_words = [word.encode("utf-8") for word in query_words]
         self.query_score_calculator(query_words)
-        db = shelve.open("dictionary2.db")
-        length = shelve.open("length2.db")
-        qc = shelve.open("query_corpus.db")
+        db = shelve.open(self.DICTIONARY)
+        length = shelve.open(self.LENGTH)
+        qc = shelve.open(self.QUERY_CORPUS)
         for word in query_words:
             if self.query_score[word]:
                 if word in qc:
@@ -137,17 +146,38 @@ class Searcher(object):
         for document in scores:
             scores[document] /= length[document]
 
-        # todo implement this with heap
-        scores = scores.items()
-        sorted_scores = heapq.nlargest(20, scores, key=operator.itemgetter(1))
         db.close()
         length.close()
         qc.close()
-        return sorted_scores[0:20]
+        scores = scores.items()
+        sorted_scores = heapq.nlargest(20, scores, key=operator.itemgetter(1))
+        self.fill_title_results()
 
+        if len(self.title_results) > 10:
+            return sorted_scores
+        else:
+            top_priority = self.title_results
+        for document in top_priority:
+            sorted_scores = filter(lambda x: x[0] != document, sorted_scores)
+
+        return sorted_scores
+
+    def fill_title_results(self):
+        """
+        Find the documents which have all the query_terms in their titles and
+        fill self.title_results
+        :return:
+        """
+        flag = True
+        empty_set = set()
+        with closing(shelve.open(self.TITLES)) as db:
+            for key in self.query_score.iterkeys():
+                if flag:
+                    flag = False
+                    self.title_results = set.union(self.title_results,
+                                                   db.get(key, empty_set))
+                else:
+                    self.title_results = set.intersection(self.title_results,
+                                                          db.get(key, empty_set))
 if __name__ == "__main__":
-    query = "elon musk"
-    query_score = {"elon": 0.15, "musk": 0.25}
-    search = Searcher(query, query_score=query_score)
-    print search.cosine_score()
-    print search.query_score
+    pass

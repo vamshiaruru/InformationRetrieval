@@ -6,11 +6,14 @@ from contextlib import closing
 import math
 import os
 from datetime import datetime
+import nltk
+from nltk import word_tokenize
 
 
 class InvertedIndexBuilder(object):
-    DICTIONARY = 'dictionary2.db'
-    LENGTH = 'length2.db'
+    DICTIONARY = 'dictionary.db'
+    TITLES = "titles.db"
+    LENGTH = 'length.db'
     file_list = list()
     CORPUS = "./static/corpus/"
     # todo strip punctuation, may be use nltk for tokenization!
@@ -42,10 +45,12 @@ class InvertedIndexBuilder(object):
         :return: None
         """
         self.get_files()
+        porter = nltk.PorterStemmer()
         with closing(shelve.open(self.DICTIONARY)) as db:
             for file_name in self.file_list:
                 with open(file_name) as f:
-                    words = f.read().split()
+                    words = [porter.stem(t) for t in word_tokenize(f.read())]
+                    words = [word.encode("utf-8") for word in words]
                     for word in words:
                         word = word.lower().strip()
                         if word in db:
@@ -88,6 +93,27 @@ class InvertedIndexBuilder(object):
                         vector_length = math.pow(vector_length, 0.5)
                         length.update({document: vector_length})
 
+    def title_database(self):
+        """
+        A seperate corpus containing titles of each file. This is used mainly
+        for boolean retrieval. Given a query, we search if a title has all the
+        query words, and return it at the top
+        :return:
+        """
+        self.get_files()
+        porter = nltk.PorterStemmer()
+        with closing(shelve.open(self.TITLES)) as db:
+            for file_name in self.file_list:
+                with open(file_name) as f:
+                    print file_name
+                    words = [porter.stem(t)
+                             for t in word_tokenize(f.readline().strip())]
+                    words = [word.encode("utf-8") for word in words]
+                    for word in words:
+                        empty_set = set()
+                        old_set = db.get(word, empty_set)
+                        old_set.add(file_name)
+                        db[word] = old_set
 
 if __name__ == '__main__':
     ib = InvertedIndexBuilder()
@@ -98,4 +124,8 @@ if __name__ == '__main__':
     now_time = datetime.now()
     print now_time
     ib.length_of_document()
+    print datetime.now() - now_time
+    now_time = datetime.now()
+    print now_time
+    ib.title_database()
     print datetime.now() - now_time

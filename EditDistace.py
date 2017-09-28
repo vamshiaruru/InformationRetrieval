@@ -57,6 +57,6 @@ class EditDistance(object):
                                                             word), qc[word]))
         edit_distances.sort(key=operator.itemgetter(1))
         edit_distances = edit_distances[0:5]
-        edit_distances.sort(key=operator.itemgetter(2), reverse=True)
+        # edit_distances.sort(key=operator.itemgetter(2), reverse=True)
         top_corrections = [i[0] for i in edit_distances]
         return top_corrections
