@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Search results!</title>
     <script src="../static/js/jquery-3.2.1.min.js"></script>
-    <script src="../static/js/displayResults.js"></script>
 </head>
 <body>
+    <script src="../static/js/displayResults.js"></script>
     <a href="{{ url_for("main") }}">Home</a>
     <br>
     <b> For the query: {{ input_query }}, the following documents were found</b>
@@ -16,7 +16,10 @@
             {% set documentPath = document[9:] %}
             {% set documentName = document[16:-4] %}
             <li><a href="{{ url_for('static',filename=documentPath) }}">{{
-                    documentName }}</a>
+                    documentName }}   </a><a href="javascript:void(0)"
+                                          onclick="readFile(this
+                                          .previousElementSibling['href'])"
+                                          target="_blank">Open</a>
             <span class="score">: {{ score }}</span></li>
         </ul>
     {% endfor %}

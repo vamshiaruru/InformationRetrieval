@@ -6,6 +6,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def main():
+    """
+    Displays a basic search_bar
+    :return:
+    """
     return render_template("index.html")
 
 
