@@ -26,6 +26,7 @@ class Searcher(object):
     tf-idf scores or the scores given by the user.
     ;top_corrections : a dict containing top_corrections for all the words in
     query that have zero df.
+    ;boolean_results : set of documents which satisfy boolean search model.
     """
     query = None
     query_score = dict()
@@ -33,6 +34,7 @@ class Searcher(object):
     weighted = False
     stop_word = []
     top_corrections = dict()
+    boolean_results = set()
 
     def __init__(self, input_query, **kwargs):
         self.query = input_query
@@ -52,7 +54,9 @@ class Searcher(object):
         word. The score is calculated by tf-idf-cosine normalization for
         query_words. If the user supplies the scores for each words (
         determined by checking the weighted boolean), there is nothing left to do
-        in this method, So we simply return.
+        in this method, So we simply return. It also fills the boolean results
+        set. Any document in boolean results set should be at the top of
+        results list.
         1) First, term frequency of each term in the query is calculated.
         2) Df, idf are calculated with respect to the inverted index. if the
         df > 500, it is considered a stop word and added to the stop_words
@@ -67,8 +71,18 @@ class Searcher(object):
         if self.weighted:
             return
         self.query_score.update(Counter(words))
+        first = True
         for key in self.query_score.iterkeys():
             with closing(shelve.open("dictionary2.db")) as db:
+                if first:
+                    first = False
+                    post_set = set(db.get(key, {}).keys())
+                    self.boolean_results = set.union(self.boolean_results,
+                                                     post_set)
+                else:
+                    post_set = set(db.get(key, {}).keys())
+                    self.boolean_results = set.intersection(self.boolean_results,
+                                                            post_set)
                 self.query_score[key] = 1 + math.log(self.query_score[key], 10)
                 df = len(db.get(key, {}))
                 if df == 0:
