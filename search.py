@@ -13,6 +13,20 @@ from EditDistace import EditDistance
 
 
 class Searcher(object):
+    """
+    This class defines all the search methods. It is the one that is exposed
+    to Flask (for GUI).
+    ;query: String, the query entered by user.
+    ;query_score: a dictionary containing scores for each word query_word. The
+    score is tf-idf score.
+    ;stop_word : a list that contains all the query_words whose df is greater
+    than 500. They are considered stop words, and are given score of zero unless
+    specifically told otherwise.
+    ;weighted : a boolean that checks whether the scores are calculated by the
+    tf-idf scores or the scores given by the user.
+    ;top_corrections : a dict containing top_corrections for all the words in
+    query that have zero df.
+    """
     query = None
     query_score = dict()
     DOCUMENT_NUMBER = 690
@@ -24,12 +38,32 @@ class Searcher(object):
         self.query = input_query
         self.top_corrections = {}
         if kwargs.get("query_score"):
+            # query_score is teh dictionary that is given by the user which
+            # contains custom scores for each words. In that case we don't
+            # need to calculate scores at all.
             self.query_score = kwargs.get("query_score")
             self.weighted = True
         else:
             self.query_score = {}
 
     def query_score_calculator(self, words):
+        """
+        This method updates the query_score dictionary with the score for each
+        word. The score is calculated by tf-idf-cosine normalization for
+        query_words. If the user supplies the scores for each words (
+        determined by checking the weighted boolean), there is nothing left to do
+        in this method, So we simply return.
+        1) First, term frequency of each term in the query is calculated.
+        2) Df, idf are calculated with respect to the inverted index. if the
+        df > 500, it is considered a stop word and added to the stop_words
+        list and it's score is zero
+        3) we consider each query a vector with dimensions as words and score
+        corresponding to each word is used to calculate vector length
+        4) score of each word is divided with this vector length to normalize
+        and query_score is updated to contain updated scores.
+        :param words: list of query_words
+        :return:
+        """
         if self.weighted:
             return
         self.query_score.update(Counter(words))
@@ -55,6 +89,15 @@ class Searcher(object):
             self.query_score[key] /= vector_length
 
     def cosine_score(self):
+        """
+        Calculates cosine score for query_words. It also adds query_word to
+        query_corpus. If the word was already present in the corpus,
+        it increases its value by 1.
+        It also populates the stop_word list of this class so as to let the
+        user know what are the stop-words.
+        Uses heapq.sort to get the top 20 items.
+        :return: Top 20 documents with highest score
+        """
         query_words = [word.lower().strip() for word in self.query.split()]
         self.query_score_calculator(query_words)
         db = shelve.open("dictionary2.db")

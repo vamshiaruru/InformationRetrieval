@@ -11,6 +11,13 @@ def main():
 
 @app.route("/displayResults", methods=['POST'])
 def search():
+    """
+    When a user enters a search query, it is obtained here. It calculates the
+    top documents by using the Searcher class.
+    :return: A template which is populated by input_query, top 20 results,
+    cosine scores of various query_words, and words whose document frequency
+    is zero.
+    """
     query = request.form.get('searchBar')
     query = unicodedata.normalize('NFKD', query).encode('ascii', 'ignore')
     searcher = Searcher(query)
@@ -24,6 +31,13 @@ def search():
 
 @app.route("/displayWeightedResults", methods=['POST'])
 def weighted_search():
+    """
+    When a user Enters weights to use for different query_words, those are
+    obtained by this method.
+    :return: A template populated by input_query, results obtained due to
+    weighted search, the scores of various query_words as given by the user
+    and words whose document frequency is zero
+    """
     weights = {}
     query = request.form.get("query")
     for key in request.form:

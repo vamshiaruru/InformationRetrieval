@@ -89,9 +89,6 @@ class InvertedIndexBuilder(object):
                         length.update({document: vector_length})
 
 
-class BigramIndexBuilder(object):
-    pass
-
 if __name__ == '__main__':
     ib = InvertedIndexBuilder()
     now_time = datetime.now()
