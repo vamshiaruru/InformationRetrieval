@@ -29,7 +29,6 @@ def search():
     scores = searcher.query_score
     zero_scores = searcher.top_corrections
     boolean_results = searcher.boolean_results
-    print len(boolean_results)
     if len(boolean_results) == 0:
         boolean_error = True
     else:
@@ -38,7 +37,7 @@ def search():
     return render_template("displayResults.html", input_query=query,
                            results=results, scores=scores,
                            zero_scores=zero_scores, title_results=title_results,
-                           error=boolean_error)
+                           error=boolean_error, boolean_results=boolean_results)
 
 
 @app.route("/displayWeightedResults", methods=['POST'])
@@ -69,7 +68,6 @@ def weighted_search():
     scores = searcher.query_score
     zero_scores = searcher.top_corrections
     boolean_results = searcher.boolean_results
-    print boolean_results
     if len(boolean_results) == 0:
         boolean_error = True
     else:

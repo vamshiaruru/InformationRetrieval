@@ -157,6 +157,8 @@ class Searcher(object):
             return sorted_scores
         else:
             top_priority = self.title_results
+            if len(self.boolean_results) < 10:
+                top_priority = set.union(top_priority, self.boolean_results)
         for document in top_priority:
             sorted_scores = filter(lambda x: x[0] != document, sorted_scores)
 

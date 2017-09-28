@@ -17,6 +17,28 @@
         </span>
     {% endif %}
     <b> For the query: {{ input_query }}, the following documents were found</b>
+    {% if boolean_results|count < 10 and not error %}
+        <span><br> You entered a pretty rare query! These are the only
+            documents that contain all the words in your query. Congrats
+            on making us work harder!
+        </span>
+        {% for document in boolean_results %}
+            <ul>
+            {% set documentPath = document[9:] %}
+            {% set documentName = document[16:-4] %}
+                <li><a href="{{ url_for('static',filename=documentPath) }}">{{
+                        documentName }}   </a>
+                    <a href="javascript:void(0)" onclick="readFile(
+                        this.previousElementSibling['href'])" target="_blank">
+                        Open
+                    </a>
+                </li>
+            </ul>
+        {% endfor %}
+        <p> We have also found these documents that may be of interest to you.
+            Do take a look.
+        </p>
+    {% endif %}
     <button onclick="hideClass($(this), 'score')">Show Scores</button>
     {% for document in title_results %}
         <ul>
