@@ -9,8 +9,27 @@
     <script src="../static/js/displayResults.js"></script>
     <a href="{{ url_for("main") }}">Home</a>
     <br>
+    {% if error %}
+        <span class="boolean_error">There is no document in the
+            corpus that contains all the words of your query. But we
+            have found the following documents that may be relevant to your
+            query!
+        </span>
+    {% endif %}
     <b> For the query: {{ input_query }}, the following documents were found</b>
     <button onclick="hideClass($(this), 'score')">Show Scores</button>
+    {% for document in title_results %}
+        <ul>
+            {% set documentPath = document[9:] %}
+            {% set documentName = document[16:-4] %}
+            <li><a href="{{ url_for('static',filename=documentPath) }}">{{
+                    documentName }}   </a><a href="javascript:void(0)"
+                                          onclick="readFile(this
+                                          .previousElementSibling['href'])"
+                                          target="_blank">Open</a>
+            </li>
+        </ul>
+    {% endfor %}
     {% for document,score in results %}
         <ul>
             {% set documentPath = document[9:] %}

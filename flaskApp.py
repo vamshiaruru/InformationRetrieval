@@ -28,9 +28,17 @@ def search():
     results = searcher.cosine_score()
     scores = searcher.query_score
     zero_scores = searcher.top_corrections
+    boolean_results = searcher.boolean_results
+    print len(boolean_results)
+    if len(boolean_results) == 0:
+        boolean_error = True
+    else:
+        boolean_error = False
+    title_results = searcher.title_results
     return render_template("displayResults.html", input_query=query,
                            results=results, scores=scores,
-                           zero_scores=zero_scores)
+                           zero_scores=zero_scores, title_results=title_results,
+                           error=boolean_error)
 
 
 @app.route("/displayWeightedResults", methods=['POST'])
@@ -60,9 +68,17 @@ def weighted_search():
     results = searcher.cosine_score()
     scores = searcher.query_score
     zero_scores = searcher.top_corrections
+    boolean_results = searcher.boolean_results
+    print boolean_results
+    if len(boolean_results) == 0:
+        boolean_error = True
+    else:
+        boolean_error = False
+    title_results = searcher.title_results
     return render_template("displayResults.html", input_query=query,
                            results=results, scores=scores,
-                           zero_scores=zero_scores)
+                           zero_scores=zero_scores, title_results=title_results,
+                           error=boolean_error)
 
 if __name__ == '__main__':
     app.debug = True
