@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Search results!</title>
     <script src="../static/js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
     <script src="../static/js/displayResults.js"></script>
@@ -22,48 +24,62 @@
             documents that contain all the words in your query. Congrats
             on making us work harder!
         </span>
+        <table class="table table-striped">
         {% for document in boolean_results %}
-            <ul>
             {% set documentPath = document[9:] %}
             {% set documentName = document[16:-4] %}
-                <li><a href="{{ url_for('static',filename=documentPath) }}">{{
-                        documentName }}   </a>
-                    <a href="javascript:void(0)" onclick="readFile(
-                        this.previousElementSibling['href'])" target="_blank">
-                        Open
+            <tr>
+                <td><a href="{{ url_for('static',filename=documentPath) }}">
+                    {{ documentName }}
                     </a>
-                </li>
-            </ul>
+                </td>
+                <td><a href="javascript:void(0)" onclick="readFile(
+                        $(this).parents('tr:first').find('td:first'))"
+                        target="_blank"
+                        class="btn btn-info"> Open
+                    </a>
+                </td>
+            </tr>
         {% endfor %}
-        <p> We have also found these documents that may be of interest to you.
-            Do take a look.
-        </p>
+        </table>
     {% endif %}
-    <button onclick="hideClass($(this), 'score')">Show Scores</button>
+    <p> We have found these documents that may be of interest to you.Do take a
+        look.
+        <button onclick="hideClass($(this), 'score')" class="btn">
+        Show Scores
+        </button>
+    </p>
+    <table class="table table-striped">
     {% for document in title_results %}
-        <ul>
+        <tr>
             {% set documentPath = document[9:] %}
             {% set documentName = document[16:-4] %}
-            <li><a href="{{ url_for('static',filename=documentPath) }}">{{
-                    documentName }}   </a><a href="javascript:void(0)"
-                                          onclick="readFile(this
-                                          .previousElementSibling['href'])"
-                                          target="_blank">Open</a>
-            </li>
-        </ul>
+            <td><a href="{{ url_for('static',filename=documentPath) }}">
+                {{ documentName }} </a>
+            </td>
+            <td><a href="javascript:void(0)" onclick=
+                    "readFile($(this).parents('tr:first').find('td:first'))"
+                   target="_blank" class="btn btn-info">Open
+                </a>
+            </td>
+        </tr>
     {% endfor %}
     {% for document,score in results %}
-        <ul>
+        <tr>
             {% set documentPath = document[9:] %}
             {% set documentName = document[16:-4] %}
-            <li><a href="{{ url_for('static',filename=documentPath) }}">{{
-                    documentName }}   </a><a href="javascript:void(0)"
-                                          onclick="readFile(this
-                                          .previousElementSibling['href'])"
-                                          target="_blank">Open</a>
-            <span class="score">: {{ score }}</span></li>
-        </ul>
+            <td><a href="{{ url_for('static',filename=documentPath) }}">
+                {{documentName }}</a>
+            </td>
+            <td><a href="javascript:void(0)" onclick=
+                    "readFile($(this).parents('tr:first').find('td:first'))"
+                   target="_blank" class="btn btn-info">Open
+                </a>
+            </td>
+            <td><span class="score"><b>{{ score }}</b></span></td>
+        </tr>
     {% endfor %}
+    </table>
     {% if zero_scores %}
         <div class="warning">
             <i>The following words do not exist in our corpus:</i>

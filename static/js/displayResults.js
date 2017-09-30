@@ -11,7 +11,8 @@ function hideClass(button, className) {
     }
 }
 function readFile(Filename) {
-    $.get(Filename, function (data) {
+    var filename = Filename.children(0).attr('href');
+    $.get(filename, function (data) {
         var win = window.open();
         win.document.open();
         var str =

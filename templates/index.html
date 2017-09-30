@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../static/js/jquery-3.2.1.min.js"></script>
 
 </head>
 <body>
-    <form method="post" action="{{ url_for('search') }}">
-        <input name="searchBar" id="searchBar" placeholder="enter your query!">
-        <input name="submitButton" id="submitButton" value="Search!" type="submit">
+    <form method="post" action="{{ url_for('search') }}" >
+        <input name="searchBar" id="searchBar" class =""
+               placeholder="enter your query!">
+        <input name="submitButton" id="submitButton" class="btn btn-primary"
+               value="Search!" type="submit">
     </form>
 </body>
 </html>
