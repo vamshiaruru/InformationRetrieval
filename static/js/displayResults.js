@@ -2,13 +2,8 @@ $(document).ready(function () {
     $('.reason').hide();
     $('.score').hide();
 });
-function hideClass(button, className) {
+function hideClass(className) {
     $('.'+className).toggle();
-    if(button.html() === "Show Scores"){
-        button.html("Hide Scores");
-    }else{
-        button.html("Show Scores");
-    }
 }
 function readFile(Filename) {
     var filename = Filename.children(0).attr('href');

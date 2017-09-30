@@ -9,8 +9,12 @@
 </head>
 <body>
     <script src="../static/js/displayResults.js"></script>
-    <a href="{{ url_for("main") }}">Home</a>
-    <br>
+    <form method="post" action="{{ url_for('search') }}" >
+        <input name="searchBar" id="searchBar" class =""
+               placeholder="enter your query!">
+        <input name="submitButton" id="submitButton" class="btn btn-primary"
+               value="Search!" type="submit">
+    </form>
     {% if error %}
         <span class="boolean_error">There is no document in the
             corpus that contains all the words of your query. But we
@@ -18,7 +22,7 @@
             query!
         </span>
     {% endif %}
-    <b> For the query: {{ input_query }}, the following documents were found</b>
+    <b> Input query: {{ input_query }}</b>
     {% if boolean_results|count < 10 and not error %}
         <span><br> You entered a pretty rare query! These are the only
             documents that contain all the words in your query. Congrats
@@ -45,8 +49,8 @@
     {% endif %}
     <p> We have found these documents that may be of interest to you.Do take a
         look.
-        <button onclick="hideClass($(this), 'score')" class="btn">
-        Show Scores
+        <button onclick="hideClass('score')" class="btn">
+        Toggle Scores
         </button>
     </p>
     <table class="table table-striped">
@@ -113,14 +117,17 @@
     </div>
     </div>
     <b>You can tell us which words to give more importance for!</b>
+    <div class=" container form-group">
     <form method="post" action="{{ url_for('weighted_search')}}">
         <input type="hidden" name="query" value="{{ input_query }}"/>
         {% for query_word in scores %}
             <label for="{{ query_word }}">{{ query_word }}:</label>
             <input name="{{ query_word }}" id="{{ query_word }}"
-                   class="inputField"/>
+                   class="form-control"/>
+            <br>
         {% endfor %}
         <input type="submit" id="weightedSearch" value="Search"/>
     </form>
+    </div>
 </body>
 </html>
