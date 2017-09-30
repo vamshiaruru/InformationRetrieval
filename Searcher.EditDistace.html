@@ -1,0 +1,82 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module EditDistace</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>EditDistace</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/vamshi/PycharmProjects/InformationRetrieval/Searcher/EditDistace.py">/home/vamshi/PycharmProjects/InformationRetrieval/Searcher/EditDistace.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;contains&nbsp;the&nbsp;<a href="#EditDistance">EditDistance</a>&nbsp;class.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="operator.html">operator</a><br>
+</td><td width="25%" valign=top><a href="shelve.html">shelve</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="EditDistace.html#EditDistance">EditDistance</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="EditDistance">class <strong>EditDistance</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Just&nbsp;a&nbsp;small&nbsp;class&nbsp;to&nbsp;calculate&nbsp;edit&nbsp;distance&nbsp;between&nbsp;two&nbsp;words,&nbsp;and&nbsp;find<br>
+the&nbsp;top&nbsp;5&nbsp;corrections&nbsp;based&nbsp;on&nbsp;the&nbsp;edit&nbsp;distance&nbsp;and&nbsp;the&nbsp;number&nbsp;of&nbsp;times&nbsp;the<br>
+word&nbsp;was&nbsp;used&nbsp;in&nbsp;a&nbsp;query.<br>
+The&nbsp;source_word&nbsp;comes&nbsp;from&nbsp;query&nbsp;entered&nbsp;by&nbsp;the&nbsp;user,&nbsp;and&nbsp;the&nbsp;target_word<br>
+is&nbsp;from&nbsp;the&nbsp;query&nbsp;corpus&nbsp;which&nbsp;is&nbsp;a&nbsp;dictionary&nbsp;consisting&nbsp;of&nbsp;all&nbsp;the<br>
+query_words&nbsp;so&nbsp;far&nbsp;that&nbsp;have&nbsp;df&nbsp;!=&nbsp;zero.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="EditDistance-top_corrections"><strong>top_corrections</strong></a>(self, source_word)</dt><dd><tt>Checks&nbsp;edit&nbsp;distance&nbsp;of&nbsp;source_word&nbsp;from&nbsp;every&nbsp;word&nbsp;in&nbsp;query_corpus<br>
+and&nbsp;returns&nbsp;the&nbsp;top&nbsp;5&nbsp;corrections.&nbsp;It&nbsp;retrieves&nbsp;the&nbsp;top&nbsp;5&nbsp;based&nbsp;on<br>
+pure&nbsp;edit_distance&nbsp;and&nbsp;then&nbsp;sorts&nbsp;them&nbsp;again&nbsp;based&nbsp;on&nbsp;number&nbsp;of&nbsp;times<br>
+the&nbsp;query_word&nbsp;was&nbsp;used&nbsp;prior<br>
+:param&nbsp;source_word:&nbsp;(String)&nbsp;query_word&nbsp;entered&nbsp;by&nbsp;user&nbsp;which&nbsp;has&nbsp;zero<br>
+document&nbsp;frequency.<br>
+:return:</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="EditDistance-edit_distance"><strong>edit_distance</strong></a>(source_word, target_word)</dt><dd><tt>A&nbsp;very&nbsp;basic&nbsp;algorithm&nbsp;to&nbsp;calculate&nbsp;levenshtein&nbsp;distance&nbsp;between&nbsp;two<br>
+words.<br>
+:param&nbsp;source_word&nbsp;:&nbsp;(String)&nbsp;The&nbsp;word&nbsp;entered&nbsp;by&nbsp;user&nbsp;in&nbsp;the&nbsp;query.<br>
+This<br>
+function&nbsp;is&nbsp;called&nbsp;only&nbsp;if&nbsp;the&nbsp;df&nbsp;of&nbsp;the&nbsp;source_word&nbsp;is&nbsp;zero.<br>
+:param&nbsp;target_word:&nbsp;(String)The&nbsp;word&nbsp;whose&nbsp;edit&nbsp;distance&nbsp;from<br>
+source_word&nbsp;is<br>
+to&nbsp;be&nbsp;checked<br>
+:return:&nbsp;edit_distance&nbsp;(integer)&nbsp;between&nbsp;source_word&nbsp;and&nbsp;target_word</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

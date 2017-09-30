@@ -10,7 +10,7 @@ import nltk
 from nltk import word_tokenize
 
 
-class InvertedIndexBuilder(object):
+class IndexBuilder(object):
     """
     This class builds the inverted Index.
     :param self.DICTIONARY: name of the dictionary in which our inverted index
@@ -127,7 +127,7 @@ class InvertedIndexBuilder(object):
                         db[word] = old_set
 
 if __name__ == '__main__':
-    ib = InvertedIndexBuilder()
+    ib = IndexBuilder()
     now_time = datetime.now()
     print now_time
     ib.weighted_index()

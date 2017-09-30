@@ -1,0 +1,138 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Searcher.search</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Searcher.html"><font color="#ffffff">Searcher</font></a>.search</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/vamshi/PycharmProjects/InformationRetrieval/Searcher/search.py">/home/vamshi/PycharmProjects/InformationRetrieval/Searcher/search.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;is&nbsp;the&nbsp;script&nbsp;that&nbsp;is&nbsp;exposed&nbsp;to&nbsp;the&nbsp;GUI/user.&nbsp;It&nbsp;calls&nbsp;the&nbsp;ranking<br>
+script,&nbsp;takes&nbsp;the&nbsp;query&nbsp;and&nbsp;searches&nbsp;for&nbsp;it.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="heapq.html">heapq</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="nltk.html">nltk</a><br>
+<a href="operator.html">operator</a><br>
+</td><td width="25%" valign=top><a href="shelve.html">shelve</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="Searcher.search.html#Searcher">Searcher</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Searcher">class <strong>Searcher</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;defines&nbsp;all&nbsp;the&nbsp;search&nbsp;methods.&nbsp;It&nbsp;is&nbsp;the&nbsp;one&nbsp;that&nbsp;is&nbsp;exposed<br>
+to&nbsp;Flask&nbsp;(for&nbsp;GUI).<br>
+;query:&nbsp;String,&nbsp;the&nbsp;query&nbsp;entered&nbsp;by&nbsp;user.<br>
+;query_score:&nbsp;a&nbsp;dictionary&nbsp;containing&nbsp;scores&nbsp;for&nbsp;each&nbsp;word&nbsp;query_word.&nbsp;The<br>
+score&nbsp;is&nbsp;tf-idf&nbsp;score.<br>
+;stop_word&nbsp;:&nbsp;a&nbsp;list&nbsp;that&nbsp;contains&nbsp;all&nbsp;the&nbsp;query_words&nbsp;whose&nbsp;df&nbsp;is&nbsp;greater<br>
+than&nbsp;500.&nbsp;They&nbsp;are&nbsp;considered&nbsp;stop&nbsp;words,&nbsp;and&nbsp;are&nbsp;given&nbsp;score&nbsp;of&nbsp;zero&nbsp;unless<br>
+specifically&nbsp;told&nbsp;otherwise.<br>
+;weighted&nbsp;:&nbsp;a&nbsp;boolean&nbsp;that&nbsp;checks&nbsp;whether&nbsp;the&nbsp;scores&nbsp;are&nbsp;calculated&nbsp;by&nbsp;the<br>
+tf-idf&nbsp;scores&nbsp;or&nbsp;the&nbsp;scores&nbsp;given&nbsp;by&nbsp;the&nbsp;user.<br>
+;top_corrections&nbsp;:&nbsp;a&nbsp;dict&nbsp;containing&nbsp;top_corrections&nbsp;for&nbsp;all&nbsp;the&nbsp;words&nbsp;in<br>
+query&nbsp;that&nbsp;have&nbsp;zero&nbsp;df.<br>
+;boolean_results&nbsp;:&nbsp;set&nbsp;of&nbsp;documents&nbsp;which&nbsp;satisfy&nbsp;boolean&nbsp;search&nbsp;model.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Searcher-__init__"><strong>__init__</strong></a>(self, input_query, **kwargs)</dt></dl>
+
+<dl><dt><a name="Searcher-cosine_score"><strong>cosine_score</strong></a>(self)</dt><dd><tt>Calculates&nbsp;cosine&nbsp;score&nbsp;for&nbsp;query_words.&nbsp;It&nbsp;also&nbsp;adds&nbsp;query_word&nbsp;to<br>
+query_corpus.&nbsp;If&nbsp;the&nbsp;word&nbsp;was&nbsp;already&nbsp;present&nbsp;in&nbsp;the&nbsp;corpus,<br>
+it&nbsp;increases&nbsp;its&nbsp;value&nbsp;by&nbsp;1.<br>
+It&nbsp;also&nbsp;populates&nbsp;the&nbsp;stop_word&nbsp;list&nbsp;of&nbsp;this&nbsp;class&nbsp;so&nbsp;as&nbsp;to&nbsp;let&nbsp;the<br>
+user&nbsp;know&nbsp;what&nbsp;are&nbsp;the&nbsp;stop-words.<br>
+Uses&nbsp;heapq.sort&nbsp;to&nbsp;get&nbsp;the&nbsp;top&nbsp;20&nbsp;items.<br>
+:return:&nbsp;Top&nbsp;20&nbsp;documents&nbsp;with&nbsp;highest&nbsp;score</tt></dd></dl>
+
+<dl><dt><a name="Searcher-fill_title_results"><strong>fill_title_results</strong></a>(self)</dt><dd><tt>Find&nbsp;the&nbsp;documents&nbsp;which&nbsp;have&nbsp;all&nbsp;the&nbsp;query_terms&nbsp;in&nbsp;their&nbsp;titles&nbsp;and<br>
+fill&nbsp;self.<strong>title_results</strong><br>
+:return:</tt></dd></dl>
+
+<dl><dt><a name="Searcher-query_score_calculator"><strong>query_score_calculator</strong></a>(self, words)</dt><dd><tt>This&nbsp;method&nbsp;updates&nbsp;the&nbsp;query_score&nbsp;dictionary&nbsp;with&nbsp;the&nbsp;score&nbsp;for&nbsp;each<br>
+word.&nbsp;The&nbsp;score&nbsp;is&nbsp;calculated&nbsp;by&nbsp;tf-idf-cosine&nbsp;normalization&nbsp;for<br>
+query_words.&nbsp;If&nbsp;the&nbsp;user&nbsp;supplies&nbsp;the&nbsp;scores&nbsp;for&nbsp;each&nbsp;words&nbsp;(<br>
+determined&nbsp;by&nbsp;checking&nbsp;the&nbsp;weighted&nbsp;boolean),&nbsp;there&nbsp;is&nbsp;nothing&nbsp;left&nbsp;to&nbsp;do<br>
+in&nbsp;this&nbsp;method,&nbsp;So&nbsp;we&nbsp;simply&nbsp;return.&nbsp;It&nbsp;also&nbsp;fills&nbsp;the&nbsp;boolean&nbsp;results<br>
+set.&nbsp;Any&nbsp;document&nbsp;in&nbsp;boolean&nbsp;results&nbsp;set&nbsp;should&nbsp;be&nbsp;at&nbsp;the&nbsp;top&nbsp;of<br>
+results&nbsp;list.<br>
+1)&nbsp;First,&nbsp;term&nbsp;frequency&nbsp;of&nbsp;each&nbsp;term&nbsp;in&nbsp;the&nbsp;query&nbsp;is&nbsp;calculated.<br>
+2)&nbsp;Df,&nbsp;idf&nbsp;are&nbsp;calculated&nbsp;with&nbsp;respect&nbsp;to&nbsp;the&nbsp;inverted&nbsp;index.&nbsp;if&nbsp;the<br>
+df&nbsp;&gt;&nbsp;500,&nbsp;it&nbsp;is&nbsp;considered&nbsp;a&nbsp;stop&nbsp;word&nbsp;and&nbsp;added&nbsp;to&nbsp;the&nbsp;stop_words<br>
+list&nbsp;and&nbsp;it's&nbsp;score&nbsp;is&nbsp;zero<br>
+3)&nbsp;we&nbsp;consider&nbsp;each&nbsp;query&nbsp;a&nbsp;vector&nbsp;with&nbsp;dimensions&nbsp;as&nbsp;words&nbsp;and&nbsp;score<br>
+corresponding&nbsp;to&nbsp;each&nbsp;word&nbsp;is&nbsp;used&nbsp;to&nbsp;calculate&nbsp;vector&nbsp;length<br>
+4)&nbsp;score&nbsp;of&nbsp;each&nbsp;word&nbsp;is&nbsp;divided&nbsp;with&nbsp;this&nbsp;vector&nbsp;length&nbsp;to&nbsp;normalize<br>
+and&nbsp;query_score&nbsp;is&nbsp;updated&nbsp;to&nbsp;contain&nbsp;updated&nbsp;scores.<br>
+:param&nbsp;words:&nbsp;list&nbsp;of&nbsp;query_words<br>
+:return:</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>DICTIONARY</strong> = 'dictionary.db'</dl>
+
+<dl><dt><strong>DOCUMENT_NUMBER</strong> = 690</dl>
+
+<dl><dt><strong>LENGTH</strong> = 'length.db'</dl>
+
+<dl><dt><strong>QUERY_CORPUS</strong> = 'query_corpus.db'</dl>
+
+<dl><dt><strong>TITLES</strong> = 'titles.db'</dl>
+
+<dl><dt><strong>boolean_results</strong> = set([])</dl>
+
+<dl><dt><strong>query</strong> = None</dl>
+
+<dl><dt><strong>query_score</strong> = {}</dl>
+
+<dl><dt><strong>stop_word</strong> = []</dl>
+
+<dl><dt><strong>title_results</strong> = set([])</dl>
+
+<dl><dt><strong>top_corrections</strong> = {}</dl>
+
+<dl><dt><strong>weighted</strong> = False</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>division</strong> = _Feature((2, 2, 0, 'alpha', 2), (3, 0, 0, 'alpha', 0), 8192)</td></tr></table>
+</body></html>
