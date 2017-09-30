@@ -1,3 +1,6 @@
+"""
+This module contains the EditDistance class.
+"""
 import shelve
 import operator
 

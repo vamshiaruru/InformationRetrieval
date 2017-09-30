@@ -1,3 +1,7 @@
+"""
+Defines various methods that are used to render templates with data obtained
+from python and then use flask to serve them.
+"""
 from search import Searcher
 from flask import Flask, render_template, request
 import unicodedata

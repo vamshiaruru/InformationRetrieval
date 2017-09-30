@@ -11,12 +11,23 @@ from nltk import word_tokenize
 
 
 class InvertedIndexBuilder(object):
+    """
+    This class builds the inverted Index.
+    :param self.DICTIONARY: name of the dictionary in which our inverted index
+    corresponding to every word and the corresponding posting list needs to be
+    stored
+    :param self.TITLES: name of the dictionary in which our inverted index of
+    words present in title of each file are stored.
+    :param self.LENGTH: name of the dictionary in which our  index of documents
+    and their lengths are stored.
+    :param self.file_list: list to store fileNames of the files in our corpus
+    :param self.coprus: path to corpus
+    """
     DICTIONARY = 'dictionary.db'
     TITLES = "titles.db"
     LENGTH = 'length.db'
     file_list = list()
     CORPUS = "./static/corpus/"
-    # todo strip punctuation, may be use nltk for tokenization!
 
     def get_files(self):
         """
