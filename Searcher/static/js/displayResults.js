@@ -20,10 +20,12 @@ function readFile(Filename) {
         '<body>';
         win.document.write(str);
         var lines = data.split("\n");
-        win.document.write("<p><b>"+lines[0]+"</b></p>");
+        win.document.write("<div class='article'>");
+        win.document.write("<p class='title'>"+lines[0]+"</p>");
         for(var i = 1; i < lines.length; i++){
             win.document.write("<p>"+lines[i]+"</p>")
         }
+        win.document.write("</div>");
         win.document.close();
     })
 }

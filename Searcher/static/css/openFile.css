@@ -1,0 +1,16 @@
+.title{
+    font-weight: bolder;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+.article{
+    border: 1px solid black;
+    width: 75%;
+    margin-left: 12.5%;
+    padding : 10px;
+    background-color: #191c1d;
+}
+p{
+    text-align: justify;
+    color: #f9ffd0;
+}
