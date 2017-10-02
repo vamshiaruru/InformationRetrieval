@@ -6,20 +6,23 @@
     <script src="../static/js/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/css/displayResults.css">
 </head>
 <body>
     <script src="../static/js/displayResults.js"></script>
-    <form method="post" action="{{ url_for('search') }}" >
+    <div id="wrapper">
+    <form method="post" action="{{ url_for('search') }}" id="homeSearch" >
         <input name="searchBar" id="searchBar" class =""
-               placeholder="enter your query!">
+               placeholder="enter your query!" size="70">
         <input name="submitButton" id="submitButton" class="btn btn-primary"
                value="Search!" type="submit">
     </form>
+    </div>
     {% if error %}
-        <span class="boolean_error">There is no document in the
+        <span class="boolean_error"><b>There is no document in the
             corpus that contains all the words of your query. But we
             have found the following documents that may be relevant to your
-            query!
+            query!</b><br>
         </span>
     {% endif %}
     <b> Input query: {{ input_query }}</b>
@@ -53,6 +56,7 @@
         Toggle Scores
         </button>
     </p>
+    <br>
     <table class="table table-striped">
     {% for document in title_results %}
         <tr>
@@ -100,30 +104,15 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="results">
-    <button id="displayReason" onclick="$(this).next().toggle()">Why am I seeing
-        these
-        results?</button>
-    <div class="reason">
-        <b> For the query "<i>{{ input_query }}</i>", our algorithm gave the
-            following
-            orders of importance to various words
-        </b>
-        <ul>
-            {% for query_word in scores %}
-                <li>{{ query_word }} : {{ scores[query_word]*100 }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    </div>
-    <b>You can tell us which words to give more importance for!</b>
+    <b>You can tell us how much importance to give for each word!</b>
     <div class=" container form-group">
     <form method="post" action="{{ url_for('weighted_search')}}">
         <input type="hidden" name="query" value="{{ input_query }}"/>
         {% for query_word in scores %}
             <label for="{{ query_word }}">{{ query_word }}:</label>
             <input name="{{ query_word }}" id="{{ query_word }}"
-                   class="form-control"/>
+                   class="form-control"
+                   placeholder=" Score :{{ scores[query_word] * 100 }}"/>
             <br>
         {% endfor %}
         <input type="submit" id="weightedSearch" value="Search"/>

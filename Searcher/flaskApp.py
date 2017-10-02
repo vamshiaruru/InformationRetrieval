@@ -5,6 +5,7 @@ from python and then use flask to serve them.
 from search import Searcher
 from flask import Flask, render_template, request
 import unicodedata
+import time
 app = Flask(__name__)
 
 
@@ -28,9 +29,11 @@ def search():
     """
     query = request.form.get('searchBar')
     query = unicodedata.normalize('NFKD', query).encode('ascii', 'ignore')
+    now = time.clock()
     searcher = Searcher(query)
     results = searcher.cosine_score()
     scores = searcher.query_score
+    print time.clock() - now
     zero_scores = searcher.top_corrections
     boolean_results = searcher.boolean_results
     if len(boolean_results) == 0:
@@ -38,6 +41,8 @@ def search():
     else:
         boolean_error = False
     title_results = searcher.title_results
+    if len(title_results) > 10 :
+        title_results = []
     return render_template("displayResults.html", input_query=query,
                            results=results, scores=scores,
                            zero_scores=zero_scores, title_results=title_results,
