@@ -1,10 +1,10 @@
 .title{
     font-weight: bolder;
     text-align: center;
-    border-bottom: 1px solid black;
+    border-bottom: 0px solid black;
 }
 .article{
-    border: 1px solid black;
+    border: 0px solid black;
     width: 75%;
     margin-left: 12.5%;
     padding : 10px;
@@ -13,4 +13,8 @@
 p{
     text-align: justify;
     color: #f9ffd0;
+    font-family: Helvetica;
+}
+body{
+    background-color: #191c1d;
 }
