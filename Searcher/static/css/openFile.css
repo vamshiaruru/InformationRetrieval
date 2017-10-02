@@ -1,10 +1,10 @@
 .title{
     font-weight: bolder;
     text-align: center;
-    border-bottom: 0px solid black;
+    border-bottom: 0 solid black;
 }
 .article{
-    border: 0px solid black;
+    border: 0 solid black;
     width: 75%;
     margin-left: 12.5%;
     padding : 10px;
